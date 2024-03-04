@@ -3,6 +3,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'; // Import the CSS file
+import './Register.css';
+import './Login.css';
 
 import Home from './components/Home.component';
 import Login from './components/Login.component'; 

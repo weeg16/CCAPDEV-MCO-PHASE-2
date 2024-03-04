@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class RegisterComponent extends React.Component {
+
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,42 +10,10 @@ class RegisterComponent extends React.Component {
       lastName: '',
       username: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      registrationSuccess: false
     };
   }
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const { firstName, lastName, username, password, confirmPassword } = this.state;
-
-    // Validation
-    if (username.length !== 8 || isNaN(username)) {
-      alert('Username must be an 8-digit number.');
-      return;
-    }
-
-    if (password.length < 8) {
-      alert('Password must be at least 8 characters long.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
-
-    // Assuming you're using some kind of backend for user registration,
-    // you would typically send this data to your backend to handle registration.
-    // For demonstration purpose, I'm storing it in local storage.
-    localStorage.setItem('firstName', firstName);
-    localStorage.setItem('lastName', lastName);
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
-
-    // Redirect to '/'
-    this.props.history.push('/');
-  };
 
   handleChange = (event) => {
     this.setState({
@@ -52,15 +21,74 @@ class RegisterComponent extends React.Component {
     });
   };
 
+  handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    const { firstName, lastName, username, password, confirmPassword } = this.state;
+  
+    // Validation
+    if (username.length !== 8 || isNaN(username)) {
+      alert('Username must be an 8-digit number.');
+      return;
+    }
+  
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return;
+    }
+  
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+  
+    // Send registration data to the backend
+    try {
+      const response = await fetch('http://localhost:5000/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ firstName, lastName, username, password })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+  
+      alert('Registration successful');
+      // Set registrationSuccess to true to trigger the redirection
+      this.setState({ registrationSuccess: true });
+    } catch (error) {
+      console.error('Error during registration:', error.message);
+      alert('Registration failed. Please try again.');
+    }
+  };
+
   render() {
+    const { registrationSuccess } = this.state;
+
+    // If registration was successful, redirect to the login page
+    if (registrationSuccess) {
+      return (
+        <div className="container">
+          <div className="left-panel">
+            <h2>Registration Successful!</h2>
+            <p>Please <Link to="/login">log in</Link> to continue.</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="container">
         <div className="left-panel">
           <div className="register-title">Register</div>
+          <Link to="/" className="back-button-register">Back</Link>
           <form onSubmit={this.handleSubmit}>
             <input
               type="text"
-              placeholder="First name"
+              placeholder="First Name"
               className="input-field"
               id="firstName"
               value={this.state.firstName}
@@ -69,7 +97,7 @@ class RegisterComponent extends React.Component {
             />
             <input
               type="text"
-              placeholder="Last name"
+              placeholder="Last Name"
               className="input-field"
               id="lastName"
               value={this.state.lastName}
@@ -78,13 +106,13 @@ class RegisterComponent extends React.Component {
             />
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username (8-digit number)"
               className="input-field"
               id="username"
               value={this.state.username}
               onChange={this.handleChange}
               pattern="\d{8}"
-              title="Username should be 8 digits"
+              title="Username should be an 8-digit number"
               required
             />
             <input
@@ -98,7 +126,7 @@ class RegisterComponent extends React.Component {
             />
             <input
               type="password"
-              placeholder="Confirm password"
+              placeholder="Confirm Password"
               className="input-field"
               id="confirmPassword"
               value={this.state.confirmPassword}
@@ -107,15 +135,10 @@ class RegisterComponent extends React.Component {
             />
             <button type="submit" className="register-button">Sign up</button>
           </form>
-          <Link to="/" className="back-button">Back</Link> {/* Back button with routing */}
-        </div>
-        <div className="right-panel">
-          <img src="dlsu logo.png" alt="DLSU Logo" className="logo" />
-          <img src="dlsu lab reservation title.png" alt="DLSU Lab Room Reservation" className="icon-text" />
         </div>
       </div>
     );
   }
 }
 
-export default RegisterComponent;
+export default Register;

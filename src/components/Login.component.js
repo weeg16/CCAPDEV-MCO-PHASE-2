@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css'; 
+
 
 export default class Login extends Component {
     constructor(props) {
@@ -27,32 +27,32 @@ export default class Login extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
-
+    
         if (!username || !password) {
             alert('Please enter both username and password.');
             return;
         }
-
+    
         try {
-            const response = await fetch('/api/users/login', {
+            const response = await fetch('http://localhost:5000/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, password })
             });
-
+    
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('Invalid response format');
             }
-
+    
             const userData = await response.json();
-
+    
             if (!response.ok || !userData) {
                 throw new Error('User not found or invalid credentials');
             }
-
+    
             console.log('User is logged in');
             // Perform additional actions upon successful login
         } catch (error) {
@@ -71,7 +71,7 @@ export default class Login extends Component {
             <div className="login-container">
                 <div className="login-box">
                     <div className="icon-text">DLSU LAB ROOM RESERVATION</div>
-                    <Link to="/" className="back-button">Back</Link>
+                    <Link to="/" className="back-button-login">Back</Link>
                     <form onSubmit={this.handleSubmit}>
                         <input
                             type="text"

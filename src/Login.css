@@ -66,7 +66,7 @@
     border-color: #423f32;
   }
 
-  .back-button {
+  .back-button-login {
     font-family: 'Cormorant Garamond', serif;
     background-color: #676767;
     color: #fff;
@@ -79,9 +79,10 @@
     left: 150px;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-decoration: none;
   }
 
-  .back-button:hover {
+  .back-button-login:hover {
     background-color: #575757;
   }
 
