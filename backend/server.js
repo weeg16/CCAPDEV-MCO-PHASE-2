@@ -18,13 +18,11 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully.")
 })
 
-const buildingsRouter = require('./routes/buildings');
 const usersRouter = require('./routes/users');
 const roomsRouter = require('./routes/rooms');
 const slotsRouter = require('./routes/slots');
 const reservationsRouter = require('./routes/reservations');
 
-app.use('/buildings', buildingsRouter);
 app.use('/users', usersRouter);
 app.use('/rooms', roomsRouter);
 app.use('/slots', slotsRouter);

@@ -1,3 +1,5 @@
+// reservations.model.js
+
 const mongoose = require('mongoose');
 
 const reservationSchema = new mongoose.Schema({
@@ -16,7 +18,6 @@ const reservationSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   },
-  // Other attributes like reservation status, etc., can be added here
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);

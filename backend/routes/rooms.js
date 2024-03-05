@@ -1,3 +1,5 @@
+// rooms.js
+
 const router = require('express').Router();
 const Room = require('../models/rooms.model');
 
@@ -10,8 +12,8 @@ router.route('/').get((req, res) => {
 
 // Route to add a new room
 router.route('/add').post((req, res) => {
-    const { number, type, building } = req.body; // Include the building field
-    const newRoom = new Room({ number, type, building }); // Include the building field
+    const { number, type, building, maxSlots } = req.body; // Include maxSlots here
+    const newRoom = new Room({ number, type, building, maxSlots }); // Include maxSlots here
     newRoom.save()
         .then(() => res.json('Room added!'))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -26,15 +28,8 @@ router.route('/:id').get((req, res) => {
 
 // Route to update a room by ID
 router.route('/update/:id').post((req, res) => {
-  Room.findById(req.params.id)
-    .then(room => {
-      room.number = req.body.number;
-      room.type = req.body.type;
-
-      room.save()
-        .then(() => res.json('Room updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
+  Room.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(() => res.json('Room updated!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 

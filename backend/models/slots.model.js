@@ -16,15 +16,15 @@ const slotSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  totalSlots: {
-    type: Number, // Total number of computer slots for this time slot
+  date: {
+    type: Date,
     required: true
   },
-  availableSlots: {
-    type: Number, // Number of available computer slots for this time slot
-    required: true
-  },
-  // Other attributes specific to slots can be added here
+  occupied: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
 
 const Slot = mongoose.model('Slot', slotSchema);

@@ -1,3 +1,5 @@
+// reservations.js
+
 const router = require('express').Router();
 const Reservation = require('../models/reservations.model');
 
@@ -26,16 +28,8 @@ router.route('/:id').get((req, res) => {
 
 // Route to update a reservation by ID
 router.route('/update/:id').post((req, res) => {
-  Reservation.findById(req.params.id)
-    .then(reservation => {
-      reservation.userId = req.body.userId;
-      reservation.slotId = req.body.slotId;
-      reservation.reservationDateTime = req.body.reservationDateTime;
-
-      reservation.save()
-        .then(() => res.json('Reservation updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
+  Reservation.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(() => res.json('Reservation updated!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
