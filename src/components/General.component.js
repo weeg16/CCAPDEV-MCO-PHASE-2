@@ -29,7 +29,7 @@ export default class General extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-general">
         <Link to ="/reserve" className="general-button">Reserve</Link>
         <Link to ="/edit-reservation" className="general-button">Edit Reservation</Link>
         <Link to ="/see-reservations" className="general-button">See Reservations</Link>

@@ -5,15 +5,6 @@ import { Link } from 'react-router-dom';
 
 
 export default class Reserve extends Component {
-  handleReserve = (reservationType) => {
-    sessionStorage.setItem('reservationType', reservationType);
-    if (reservationType === 'self') {
-      window.location.href = 'confirm-reservation.html';
-    } else if (reservationType === 'student') {
-      window.location.href = 'reserve_lab.html';
-    }
-  };
-
   handleSettingsButtonClick = () => {
     const dropdownContent = document.querySelector('.dropdown-content');
     const isDisplayed = dropdownContent.style.display === 'block';
