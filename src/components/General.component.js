@@ -1,4 +1,4 @@
-// General.js
+// general.component.js
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,7 +40,7 @@ export default class General extends Component {
           </button>
           <div className="dropdown-content">
             <a href="profile.html">View profile</a>
-            <a href="login.html">Log out</a>
+            <Link to="/login">Log out</Link>
           </div>
         </div>
       </div>
