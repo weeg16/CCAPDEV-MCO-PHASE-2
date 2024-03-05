@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Navigate, Link } from 'react-router-dom';
 
 export default class Login extends Component {
     constructor(props) {
@@ -8,7 +7,8 @@ export default class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            showPassword: false
+            showPassword: false,
+            loggedIn: false
         };
     }
 
@@ -27,12 +27,12 @@ export default class Login extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
-    
+
         if (!username || !password) {
             alert('Please enter both username and password.');
             return;
         }
-    
+
         try {
             const response = await fetch('http://localhost:5000/users/login', {
                 method: 'POST',
@@ -41,32 +41,39 @@ export default class Login extends Component {
                 },
                 body: JSON.stringify({ username, password })
             });
-    
+
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('Invalid response format');
             }
-    
+
             const userData = await response.json();
-    
+
             if (!response.ok || !userData) {
                 throw new Error('User not found or invalid credentials');
             }
-    
+
             console.log('User is logged in');
-            // Perform additional actions upon successful login
+            // Set loggedIn state to true upon successful login
+            this.setState({ loggedIn: true });
         } catch (error) {
             console.error('Error logging in:', error.message);
             if (error.message === 'Invalid response format') {
-                alert('Error logging in. Please try again.'); // Show a user-friendly error message
+                alert('Error logging in. Please try again.');
             } else {
-                alert('Invalid credentials. Please try again.'); // Show a user-friendly error message
+                alert('Invalid credentials. Please try again.');
             }
         }
     }
 
     render() {
-        const { username, password, showPassword } = this.state;
+        const { username, password, showPassword, loggedIn } = this.state;
+
+        // Redirect to reserve component if loggedIn is true
+        if (loggedIn) {
+            return <Navigate to="/general" />;
+        }
+
         return (
             <div className="login-container">
                 <div className="login-box">
