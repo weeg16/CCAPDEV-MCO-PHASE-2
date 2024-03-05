@@ -10,7 +10,7 @@ import './SlotAvailability.css';
 import Home from './components/Home.component';
 import Login from './components/Login.component'; 
 import Register from './components/Register.component';
-import SlotAvailability from './components/SlotAvailability.component';
+/* import SlotAvailability from './components/SlotAvailability.component'; */
 
 function App() {
     return (
@@ -19,7 +19,7 @@ function App() {
                 <Route path="/" element={<Home />} /> {/* Route for home page */}
                 <Route path="/login" element={<Login />} /> {/* Route for login page */}
                 <Route path="/register" element={<Register />} /> {/* Route for login page */}
-                <Route path="/slotavailability" element={<SlotAvailability />} /> {/* Route for login page */}
+                {/* <Route path="/slotavailability" element={<SlotAvailability />} />  Route for login page */}
             </Routes>
         </Router>
     );

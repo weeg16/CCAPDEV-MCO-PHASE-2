@@ -40,4 +40,11 @@ router.route('/:id').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/reservations').get((req, res) => {
+  const { date, roomId } = req.query;
+  Slot.find({ date: date, roomId: roomId })
+    .then(slots => res.json(slots))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;
