@@ -72,3 +72,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Back-end
 
 To start the server, please make sure your directory is in the backend folder.
+
+### 'cd backend'
+
+Once in the backend folder, you can run the server.
+
+### 'node server.js"
