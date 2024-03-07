@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with Create React App (Front-end)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -68,3 +68,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Back-end
+
+To start the server, please make sure your directory is in the backend folder.
+
+### 'cd backend'
+
+Once in the backend folder, you can run the server.
+
+### 'node server.js"
