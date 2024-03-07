@@ -1,4 +1,4 @@
-// user.js
+// users.js
 
 const router = require('express').Router();
 const User = require('../models/users.model');
@@ -51,5 +51,23 @@ router.route('/register').post(async (req, res) => {
         res.status(500).json({ message: 'Error registering user', error: error.message });
     }
 });
+
+router.route('/:username').get(async (req, res) => {
+    const username = req.params.username;
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        // Send the user data in the response
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+
 
 module.exports = router;

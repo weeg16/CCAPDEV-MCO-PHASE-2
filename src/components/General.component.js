@@ -39,7 +39,7 @@ export default class General extends Component {
             Settings
           </button>
           <div className="dropdown-content">
-            <a href="profile.html">View profile</a>
+            <Link to="/profile">View profile</Link>
             <Link to="/login">Log out</Link>
           </div>
         </div>

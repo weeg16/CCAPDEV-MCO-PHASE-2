@@ -55,6 +55,8 @@ export default class Login extends Component {
 
             console.log('User is logged in');
             // Set loggedIn state to true upon successful login
+            localStorage.setItem('username', username);
+            console.log(username);
             this.setState({ loggedIn: true });
         } catch (error) {
             console.error('Error logging in:', error.message);
