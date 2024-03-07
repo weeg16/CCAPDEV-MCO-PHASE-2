@@ -30,8 +30,8 @@ export default class Reserve extends Component {
             Settings
           </button>
           <div className="dropdown-content">
-            <a href="profile.html">View profile</a>
-            <a href="login.html">Log out</a>
+            <Link to="/profile">View profile</Link>
+            <Link to="/login">Log out</Link>
           </div>
         </div>
 

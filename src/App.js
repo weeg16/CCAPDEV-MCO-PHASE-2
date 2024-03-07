@@ -9,14 +9,17 @@ import './SlotAvailability.css';
 import './General.css';
 import './Reserve.css';
 import './Profile.css';
+import './ReserveComputer.css';
 
 import Home from './components/Home.component';
 import Login from './components/Login.component'; 
 import Register from './components/Register.component';
-/* import SlotAvailability from './components/SlotAvailability.component'; */
+import SlotAvailability from './components/SlotAvailability.component'; 
 import General from './components/General.component';
 import Reserve from './components/Reserve.component';
 import Profile from './components/Profile.component';
+import ReserveComputer from './components/ReserveComputer.component';
+
 
 function App() {
     return (
@@ -25,10 +28,12 @@ function App() {
                 <Route path="/" element={<Home />} /> {/* Route for home page */}
                 <Route path="/login" element={<Login />} /> {/* Route for login page */}
                 <Route path="/register" element={<Register />} /> {/* Route for login page */}
-                {/* <Route path="/slotavailability" element={<SlotAvailability />} />  Route for login page */}
+                <Route path="/slotavailability" element={<SlotAvailability />}  />
                 <Route path="/general" element={<General />} /> 
                 <Route path="/reserve" element={<Reserve />} />
-                <Route path="/profile" element={<Profile />} />          
+                <Route path="/reservecomputer" element={<ReserveComputer />} />
+                <Route path="/profile" element={<Profile />} />
+
             </Routes>
         </Router>
     );

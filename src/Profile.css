@@ -51,22 +51,6 @@ body {
     border-color: #423f32;
   }
 
-  .back-button {
-    font-family: 'Cormorant Garamond', serif;
-    background-color: #676767;
-    border: 1px solid #423f32;
-    color: #fff;
-    border: none;
-    width: 10%;
-    padding: 7px 25px;
-    border-radius: 20px;
-    font-size: 20px;
-    position: absolute;
-    bottom: 20px;
-    left: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
 
   .back-button:hover {
     background-color: #575757;
