@@ -42,9 +42,9 @@ export default class Profile extends Component {
         }
 
         return (
-            <div classname="profile-container">
-                <h1 class="profile-title">User Profile</h1>
-                <div class="profile-details">
+            <div className="profile-container">
+                <h1 className="profile-title">User Profile</h1>
+                <div className="profile-details">
                     {/* Display user details */}
                     <p>Username: {user.username}</p>
                     <p>First Name: {user.firstName}</p>
