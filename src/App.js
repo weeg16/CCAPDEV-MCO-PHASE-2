@@ -19,6 +19,7 @@ import General from './components/General.component';
 import Reserve from './components/Reserve.component';
 import Profile from './components/Profile.component';
 import ReserveComputer from './components/ReserveComputer.component';
+import ReserveLab from './components/ReserveLab.component';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/general" element={<General />} /> 
                 <Route path="/reserve" element={<Reserve />} />
                 <Route path="/reservecomputer" element={<ReserveComputer />} />
+                <Route path="/reservelab" element={<ReserveLab />} />
                 <Route path="/profile" element={<Profile />} />
 
             </Routes>
