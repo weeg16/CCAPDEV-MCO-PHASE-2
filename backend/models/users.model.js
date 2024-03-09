@@ -20,12 +20,20 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        minlength: 3
+        minlength: 8
     },
     password: {
         type: String,
         required: true,
-        minlength: 6 // Minimum length for password
+        minlength: 8
+    },
+    course: {
+        type: String,
+        default: ''
+    },
+    description: {
+        type: String,
+        default: ''
     }
 }, {
     timestamps: true,

@@ -33,15 +33,15 @@ router.route('/login').post(async (req, res) => {
 
 router.route('/register').post(async (req, res) => {
     const { firstName, lastName, username, password } = req.body;
-    
+
     // Check if the username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
         return res.status(400).json({ message: 'Username already exists' });
     }
 
-    // Create a new user object
-    const newUser = new User({ firstName, lastName, username, password });
+    // Create a new user object with default course and description
+    const newUser = new User({ firstName, lastName, username, password, course: '', description: '' });
 
     // Save the user to the database
     try {
@@ -52,10 +52,11 @@ router.route('/register').post(async (req, res) => {
     }
 });
 
+
 router.route('/:username').get(async (req, res) => {
     const username = req.params.username;
     try {
-        const user = await User.findOne({ username: username });
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -63,6 +64,28 @@ router.route('/:username').get(async (req, res) => {
         res.json(user);
     } catch (error) {
         console.error('Error fetching user details:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+router.route('/:username').put(async (req, res) => {
+    const username = req.params.username;
+    const { course, description } = req.body;
+
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { username },
+            { $set: { course, description } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user details:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
