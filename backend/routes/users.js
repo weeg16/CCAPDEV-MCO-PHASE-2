@@ -90,7 +90,19 @@ router.route('/:username').put(async (req, res) => {
     }
 });
 
-
+// Add this route to users.js for deleting a user
+router.route('/:id').delete(async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 
 module.exports = router;
