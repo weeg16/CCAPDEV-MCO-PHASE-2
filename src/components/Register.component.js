@@ -89,7 +89,7 @@ class Register extends Component {
             <input
               type="text"
               placeholder="First Name"
-              className="input-field"
+              className="input-field-register"
               id="firstName"
               value={this.state.firstName}
               onChange={this.handleChange}
@@ -98,7 +98,7 @@ class Register extends Component {
             <input
               type="text"
               placeholder="Last Name"
-              className="input-field"
+              className="input-field-register"
               id="lastName"
               value={this.state.lastName}
               onChange={this.handleChange}
@@ -107,7 +107,7 @@ class Register extends Component {
             <input
               type="text"
               placeholder="Username (8-digit number)"
-              className="input-field"
+              className="input-field-register"
               id="username"
               value={this.state.username}
               onChange={this.handleChange}
@@ -118,7 +118,7 @@ class Register extends Component {
             <input
               type="password"
               placeholder="Password"
-              className="input-field"
+              className="input-field-register"
               id="password"
               value={this.state.password}
               onChange={this.handleChange}
@@ -127,7 +127,7 @@ class Register extends Component {
             <input
               type="password"
               placeholder="Confirm Password"
-              className="input-field"
+              className="input-field-register"
               id="confirmPassword"
               value={this.state.confirmPassword}
               onChange={this.handleChange}

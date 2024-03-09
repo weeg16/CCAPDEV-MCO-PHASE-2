@@ -10,6 +10,7 @@ import './General.css';
 import './Reserve.css';
 import './Profile.css';
 import './ReserveComputer.css';
+import './Admin.css';
 
 import Home from './components/Home.component';
 import Login from './components/Login.component'; 
@@ -20,6 +21,7 @@ import Reserve from './components/Reserve.component';
 import Profile from './components/Profile.component';
 import ReserveComputer from './components/ReserveComputer.component';
 import ReserveLab from './components/ReserveLab.component';
+import Admin from './components/Admin.component';
 
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
                 <Route path="/reserve" element={<Reserve />} />
                 <Route path="/reservecomputer" element={<ReserveComputer />} />
                 <Route path="/reservelab" element={<ReserveLab />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/profile" element={<Profile />} />
 
             </Routes>

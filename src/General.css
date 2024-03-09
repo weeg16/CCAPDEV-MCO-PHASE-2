@@ -24,6 +24,22 @@
     text-align: center; 
     text-decoration: none;
   }
+
+  .admin-button {
+    background-color: #f1ebe5;
+    color: #ff0000;
+    padding: 20px 50px;
+    margin-bottom: 20px;
+    border: 1px solid #423f32;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bolder;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center; 
+    text-decoration: none;
+  }
   
   .general-button:hover {
     background-color: #E8E1DA;

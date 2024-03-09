@@ -1,9 +1,14 @@
-// general.component.js
-
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 export default class General extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedInUsername: localStorage.getItem('username')
+    };
+  }
+
   componentDidMount() {
     this.handleWindowClick = this.handleWindowClick.bind(this);
     window.addEventListener('click', this.handleWindowClick);
@@ -28,11 +33,17 @@ export default class General extends Component {
   }
 
   render() {
+    const { loggedInUsername } = this.state;
+
     return (
       <div className="container-general">
-        <Link to ="/reserve" className="general-button">Reserve</Link>
-        <Link to ="/edit-reservation" className="general-button">Edit Reservation</Link>
-        <Link to ="/see-reservations" className="general-button">See Reservations</Link>
+        <Link to="/reserve" className="general-button">Reserve</Link>
+        <Link to="/edit-reservation" className="general-button">Edit Reservation</Link>
+        <Link to="/see-reservations" className="general-button">See Reservations</Link>
+
+        {loggedInUsername === "ADMIN" && (
+          <Link to="/admin" className="admin-button">Admin</Link>
+        )}
 
         <div className="dropdown">
           <button className="settings-button button" onClick={this.handleSettingsButtonClick}>

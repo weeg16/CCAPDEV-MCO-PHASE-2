@@ -3,23 +3,21 @@
 body {
   font-family: 'EB Garamond', serif;
   background-color: #cdcfc0;
-  
 }
 
 .container {
-display: flex;
-justify-content: space-evenly; 
-align-items: center; 
-height: 100vh;
-padding: 0 10%;
+  display: flex;
+  justify-content: space-evenly; 
+  align-items: center; 
+  padding: 0 10%;
 }
 
 
 .logo-container {
-display: flex;
-flex-direction:row; 
-align-items: left; 
-text-align: center; 
+  display: flex;
+  flex-direction:row; 
+  align-items: left; 
+  text-align: center; 
 }
 
 .logo {
@@ -30,7 +28,6 @@ text-align: center;
 
 
 .icon-text-home {
-
   margin-top: 70px;
   margin-left: -70px;
   background: url('dlsu_lab_reservation_title.png') no-repeat;
