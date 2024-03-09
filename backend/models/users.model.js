@@ -1,5 +1,3 @@
-// users.model.js
-
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -40,5 +38,27 @@ const userSchema = new Schema({
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Add default admin user
+(async () => {
+    try {
+        const adminUser = await User.findOne({ username: 'ADMIN' });
+        if (!adminUser) {
+            await User.create({
+                firstName: 'ADMIN',
+                lastName: '',
+                username: 'ADMIN',
+                password: 'ADMIN-ONLY',
+                course: '',
+                description: ''
+            });
+            console.log('Default admin user created successfully.');
+        } else {
+            console.log('Default admin user already exists.');
+        }
+    } catch (error) {
+        console.error('Error creating default admin user:', error);
+    }
+})();
 
 module.exports = User;
