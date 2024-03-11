@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Admin extends Component {
+export default class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -60,8 +60,6 @@ class Admin extends Component {
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Username</th>
-                                <th>Course</th>
-                                <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,8 +68,6 @@ class Admin extends Component {
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
                                     <td>{user.username}</td>
-                                    <td>{user.course}</td>
-                                    <td>{user.description}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -81,5 +77,3 @@ class Admin extends Component {
         );
     }
 }
-
-export default Admin;

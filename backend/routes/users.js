@@ -104,5 +104,34 @@ router.route('/:id').delete(async (req, res) => {
     }
 });
 
+router.route('/:username').put(async (req, res) => {
+    const username = req.params.username;
+    const { firstName, lastName, password } = req.body; // Adjust according to your schema
+
+    try {
+        console.log('Received PUT request for user:', username);
+        console.log('Updated user details:', { firstName, lastName, password });
+
+        // Perform database update operation
+        const updatedUser = await User.findOneAndUpdate(
+            { username },
+            { $set: { firstName, lastName, password } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('User details updated successfully:', updatedUser);
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user details:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+
 
 module.exports = router;
