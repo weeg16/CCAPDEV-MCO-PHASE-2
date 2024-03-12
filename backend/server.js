@@ -276,13 +276,9 @@ const sampleRooms = [
 
 const usersRouter = require('./routes/users');
 const roomsRouter = require('./routes/rooms');
-const slotsRouter = require('./routes/slots');
-const reservationsRouter = require('./routes/reservations');
 
 app.use('/users', usersRouter);
 app.use('/rooms', roomsRouter);
-app.use('/slots', slotsRouter);
-app.use('/reservations', reservationsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

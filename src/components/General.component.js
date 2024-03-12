@@ -41,7 +41,7 @@ export default class General extends Component {
         <Link to="/edit-reservation" className="general-button">Edit Reservation</Link>
         <Link to="/see-reservations" className="general-button">See Reservations</Link>
 
-        {loggedInUsername === "ADMIN" && (
+        {loggedInUsername === "00000000" && (
           <Link to="/admin" className="admin-button">Admin</Link>
         )}
 

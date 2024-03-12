@@ -42,12 +42,12 @@ const User = mongoose.model('User', userSchema);
 // Add default admin user
 (async () => {
     try {
-        const adminUser = await User.findOne({ username: 'ADMIN' });
+        const adminUser = await User.findOne({ username: '00000000' });
         if (!adminUser) {
             await User.create({
-                firstName: 'ADMIN',
-                lastName: '',
-                username: 'ADMIN',
+                firstName: 'DLSU',
+                lastName: 'ADMINISTRATOR',
+                username: '00000000',
                 password: 'ADMIN-ONLY',
                 course: '',
                 description: ''

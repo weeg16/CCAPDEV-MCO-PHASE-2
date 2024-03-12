@@ -9,11 +9,12 @@ const reservationSchema = new mongoose.Schema({
     reservationId: { type: Number, unique: true }, // Ensure reservationId uniqueness
     computerId: Number,
     date: String,
-    timeSlot: String
+    timeSlot: String,
+    userId: String, // Add userId field to associate the reservation with the user
 });
 
-// Add compound index for computerId, date, and timeSlot to enforce uniqueness
-reservationSchema.index({ computerId: 1, date: 1, timeSlot: 1 }, { unique: true });
+// Add compound index for computerId, date, timeSlot, and userId to enforce uniqueness
+reservationSchema.index({ computerId: 1, date: 1, timeSlot: 1, userId: 1 }, { unique: true });
 
 const roomSchema = new mongoose.Schema({
     name: {
