@@ -11,7 +11,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Update the URI to connect to your local MongoDB instance
 const uri = process.env.LOCAL_MONGODB_URI || 'mongodb://localhost:27017/mydatabase';
 mongoose.connect(uri);
 
@@ -23,23 +22,22 @@ connection.once('open', () => {
         .catch(err => console.error('Error processing sample rooms:', err));
 });
 
-// Function to insert or update a sample room
+
 async function insertOrUpdateSampleRoom(sampleRoom) {
     try {
-        console.log(`Inserting/updating room: ${sampleRoom.name}`); // Add this line
+        console.log(`Inserting/updating room: ${sampleRoom.name}`); 
         const updateResult = await Room.updateOne(
-            { name: sampleRoom.name }, // Filter by unique room name
-            { $setOnInsert: sampleRoom }, // Set data if inserting
-            { upsert: true } // Insert the document if it doesn't exist
+            { name: sampleRoom.name }, 
+            { $setOnInsert: sampleRoom },
+            { upsert: true } 
         );
 
-        // Log the outcome
         if (updateResult.upsertedCount > 0) {
             console.log(`Inserted room: ${sampleRoom.name}`);
         } else if (updateResult.modifiedCount > 0) {
             console.log(`Updated room: ${sampleRoom.name}`);
         } else {
-            console.log(`Room already exists and is unchanged: ${sampleRoom.name}`);
+            console.log(`Room already exists: ${sampleRoom.name}`);
         }
     } catch (err) {
         console.error(`Error inserting/updating room ${sampleRoom.name}:`, err);
@@ -47,14 +45,12 @@ async function insertOrUpdateSampleRoom(sampleRoom) {
 }
 
 
-// Iterate over sample rooms and insert or update them
 async function insertOrUpdateSampleRooms(sampleRooms) {
     for (const sampleRoom of sampleRooms) {
         await insertOrUpdateSampleRoom(sampleRoom);
     }
 }
 
-// Sample room data
 const sampleRooms = [
     {
         name: 'LS212',

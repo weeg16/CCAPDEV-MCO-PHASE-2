@@ -12,13 +12,17 @@ export default class Profile extends Component {
     };
 
     componentDidMount() {
+        this.fetchUserData();
+    }
+
+    fetchUserData = () => {
         const username = localStorage.getItem('username');
-        
+
         if (!username) {
             this.setState({ isLoading: false, error: 'Username not found in localStorage' });
             return;
         }
-        
+
         fetch(`http://localhost:5000/users/${username}`)
             .then(response => {
                 if (!response.ok) {
@@ -32,7 +36,7 @@ export default class Profile extends Component {
             .catch(error => {
                 this.setState({ error: error.message, isLoading: false });
             });
-    }
+    };
 
     handleEdit = () => {
         const { user } = this.state;
@@ -46,7 +50,7 @@ export default class Profile extends Component {
     handleSave = async () => {
         const { editedCourse, editedDescription } = this.state;
         const username = localStorage.getItem('username');
-        
+
         try {
             const response = await fetch(`http://localhost:5000/users/${username}`, {
                 method: 'PUT',
@@ -55,13 +59,13 @@ export default class Profile extends Component {
                 },
                 body: JSON.stringify({ course: editedCourse, description: editedDescription })
             });
-            
+
             if (!response.ok) {
                 throw new Error('Failed to update user details');
             }
-            
+
             // Reload user data after successful update
-            this.componentDidMount();
+            this.fetchUserData();
             this.setState({ editing: false });
         } catch (error) {
             console.error('Error updating user details:', error.message);
@@ -69,7 +73,28 @@ export default class Profile extends Component {
         }
     };
 
-    handleChange = (event) => {
+    handleDelete = async () => {
+        const username = localStorage.getItem('username');
+
+        try {
+            const response = await fetch(`http://localhost:5000/users/${username}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete user account');
+            }
+
+            // Perform any additional actions after successful deletion (e.g., redirect to login page)
+            localStorage.removeItem('username');
+            // Redirect to login page or any other appropriate action
+        } catch (error) {
+            console.error('Error deleting user account:', error.message);
+            alert('Failed to delete user account. Please try again.');
+        }
+    };
+
+    handleChange = event => {
         this.setState({
             [event.target.id]: event.target.value
         });
@@ -88,7 +113,9 @@ export default class Profile extends Component {
 
         return (
             <div className="profile-container">
-                <Link to ="/general" className="back-button">Back</Link>
+                <Link to="/general" className="back-button">
+                    Back
+                </Link>
                 <h1 className="profile-title">User Profile</h1>
                 <div className="profile-details">
                     {/* Display user details */}
@@ -115,7 +142,7 @@ export default class Profile extends Component {
                                 value={editedDescription}
                                 onChange={this.handleChange}
                             />
-                            <div className="edit-button-container">   
+                            <div className="edit-button-container">
                                 <button onClick={this.handleSave}>Save</button>
                             </div>
                         </div>
@@ -125,6 +152,7 @@ export default class Profile extends Component {
                             <p>Description: {user.description}</p>
                             <div className="edit-button-container">
                                 <button onClick={this.handleEdit}>Edit Course & Description</button>
+                                <button onClick={this.handleDelete}>Delete Account</button>
                             </div>
                         </div>
                     )}

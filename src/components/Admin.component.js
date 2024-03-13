@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Admin extends Component {
     constructor(props) {
@@ -44,15 +45,14 @@ export default class Admin extends Component {
             return <div>Error: {error}</div>;
         }
 
-        // Filter out the admin user
-        const filteredUsers = users.filter(user => user.username !== 'ADMIN');
+        const filteredUsers = users.filter(user => user.username !== '00000000');
 
         return (
             <div>
                 <h2>Admin Panel</h2>
-                <button className="admin-panel" onClick={this.handleViewUserDetails}>
+                <Link to ="/admin" className="admin-panel" onClick={this.handleViewUserDetails}>
                     View User Details
-                </button>
+                </Link>
                 {showUserList && (
                     <table className="user-table">
                         <thead>

@@ -86,6 +86,31 @@ router.post('/reserve', async (req, res) => {
 });
 
 
+// GET request to retrieve existing reservations for a specific date, time slot, and room
+router.get('/reservations/:roomName', async (req, res) => {
+  const { date, timeSlot } = req.query;
+  const { roomName } = req.params;
+
+  // Validate incoming data
+  if (!date || !timeSlot || !roomName) {
+    return res.status(400).json({ message: 'Missing room name, date, or time slot parameter' });
+  }
+
+  try {
+    // Find reservations for the specified room, date, and time slot
+    const existingReservations = await Room.findOne({
+      name: roomName,
+      'reservations.date': date,
+      'reservations.timeSlot': timeSlot
+    }, 'reservations.$'); // Return only the matching reservation elements
+
+    res.status(200).json(existingReservations || {});
+  } catch (error) {
+    console.error('Error retrieving reservations:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // GET request to retrieve existing reservations for a specific date
 router.get('/reservations', async (req, res) => {
   const { date } = req.query;
@@ -97,11 +122,9 @@ router.get('/reservations', async (req, res) => {
 
   try {
     // Find reservations for the specified date
-    const existingReservations = await Room.find({
-      'reservations.date': date
-    });
+    const existingReservations = await Room.find({ 'reservations.date': date }, 'name reservations');
 
-    res.status(200).json(existingReservations);
+    res.status(200).json(existingReservations || []);
   } catch (error) {
     console.error('Error retrieving reservations:', error);
     res.status(500).json({ message: 'Internal server error' });

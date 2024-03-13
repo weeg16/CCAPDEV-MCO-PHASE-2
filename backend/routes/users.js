@@ -91,9 +91,9 @@ router.route('/:username').put(async (req, res) => {
 });
 
 // Add this route to users.js for deleting a user
-router.route('/:id').delete(async (req, res) => {
+router.route('/:username').delete(async (req, res) => {
     try {
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        const deletedUser = await User.findOneAndDelete({ username: req.params.username });
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found' });
         }

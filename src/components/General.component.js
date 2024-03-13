@@ -39,7 +39,7 @@ export default class General extends Component {
       <div className="container-general">
         <Link to="/reserve" className="general-button">Reserve</Link>
         <Link to="/edit-reservation" className="general-button">Edit Reservation</Link>
-        <Link to="/see-reservations" className="general-button">See Reservations</Link>
+        <Link to="/seereservations" className="general-button">See Reservations</Link>
 
         {loggedInUsername === "00000000" && (
           <Link to="/admin" className="admin-button">Admin</Link>

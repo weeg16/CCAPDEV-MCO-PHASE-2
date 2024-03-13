@@ -13,8 +13,6 @@ const reservationSchema = new mongoose.Schema({
     userId: String, // Add userId field to associate the reservation with the user
 });
 
-// Add compound index for computerId, date, timeSlot, and userId to enforce uniqueness
-reservationSchema.index({ computerId: 1, date: 1, timeSlot: 1, userId: 1 }, { unique: true });
 
 const roomSchema = new mongoose.Schema({
     name: {
@@ -25,8 +23,6 @@ const roomSchema = new mongoose.Schema({
     reservations: [reservationSchema]
 });
 
-// Remove unintended index
-roomSchema.index({ number: 1 }, { unique: true });
 
 const Room = mongoose.model('Room', roomSchema);
 
