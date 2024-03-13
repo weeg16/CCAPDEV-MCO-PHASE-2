@@ -267,7 +267,70 @@ const sampleRooms = [
             { computerId: 25, isAvailable: true },
         ],
         reservations: []
-    }
+    },
+    {
+        name: 'L320',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'L335',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'G304B',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'G306',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'G404',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'Y603',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'V211',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'V301',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
+    {
+        name: 'J213',
+        computers: [
+            { computerId: 1, isAvailable: true }
+        ],
+        reservations: []
+    },
 ];
 
 const usersRouter = require('./routes/users');

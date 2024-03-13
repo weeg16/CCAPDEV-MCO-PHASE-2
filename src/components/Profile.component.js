@@ -75,24 +75,28 @@ export default class Profile extends Component {
 
     handleDelete = async () => {
         const username = localStorage.getItem('username');
-
+    
         try {
             const response = await fetch(`http://localhost:5000/users/${username}`, {
                 method: 'DELETE'
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to delete user account');
             }
-
-            // Perform any additional actions after successful deletion (e.g., redirect to login page)
+    
+            // Remove user data from localStorage after successful deletion
             localStorage.removeItem('username');
-            // Redirect to login page or any other appropriate action
+    
+            window.location.href = '/login';
+
+            alert('User account deleted successfully.');
         } catch (error) {
             console.error('Error deleting user account:', error.message);
             alert('Failed to delete user account. Please try again.');
         }
     };
+    
 
     handleChange = event => {
         this.setState({

@@ -85,6 +85,62 @@ router.post('/reserve', async (req, res) => {
   }
 });
 
+router.post('/reservelab', async (req, res) => {
+  const { roomName, computerId, date, timeSlot, userId } = req.body; // Include userId from request body
+
+  // Validate incoming data
+  if (!roomName || !computerId || !date || !timeSlot || !userId) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    // Check if the user already has a reservation for the given date
+    const existingReservationForDate = await Room.findOne({
+      name: roomName,
+      reservations: {
+        $elemMatch: { 
+          date: date,
+          userId: userId
+        }
+      }
+    });
+
+    if (existingReservationForDate) {
+      return res.status(400).json({ message: 'You already have a reservation for this date.' });
+    }
+
+    // Check if the computer is already reserved for the given date
+    const existingReservationForComputer = await Room.findOne({
+      name: roomName,
+      reservations: {
+        $elemMatch: {
+          computerId: computerId,
+          date: date,
+          timeSlot: timeSlot
+        }
+      }
+    });
+
+    if (existingReservationForComputer) {
+      return res.status(400).json({ message: 'This computer is already reserved for the given timeslot.' });
+    }
+
+    // Find the room by name and add reservation
+    const updatedRoom = await Room.findOneAndUpdate(
+      { name: roomName },
+      { $push: { reservations: { computerId, date, timeSlot, userId } } },
+      { new: true }
+    );
+
+    console.log(`Reservation added: Room ${roomName} reserved for ${date} at ${timeSlot} by User ${userId}.`);
+
+    res.status(200).json({ message: `Room ${roomName} reserved for ${date} at ${timeSlot} by User ${userId}.` });
+  } catch (error) {
+    console.error('Error creating reservation:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // GET request to retrieve existing reservations for a specific date, time slot, and room
 router.get('/reservations/:roomName', async (req, res) => {

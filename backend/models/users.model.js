@@ -39,7 +39,6 @@ const userSchema = new Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// Add default admin user
 (async () => {
     try {
         const adminUser = await User.findOne({ username: '00000000' });
