@@ -64,7 +64,6 @@ export default class Profile extends Component {
                 throw new Error('Failed to update user details');
             }
 
-            // Reload user data after successful update
             this.fetchUserData();
             this.setState({ editing: false });
         } catch (error) {
@@ -85,7 +84,6 @@ export default class Profile extends Component {
                 throw new Error('Failed to delete user account');
             }
     
-            // Remove user data from localStorage after successful deletion
             localStorage.removeItem('username');
     
             window.location.href = '/login';
@@ -122,12 +120,10 @@ export default class Profile extends Component {
                 </Link>
                 <h1 className="profile-title">User Profile</h1>
                 <div className="profile-details">
-                    {/* Display user details */}
                     <p>Username: {user.username}</p>
                     <p>First Name: {user.firstName}</p>
                     <p>Last Name: {user.lastName}</p>
 
-                    {/* Display or edit course and description */}
                     {editing ? (
                         <div>
                             <input

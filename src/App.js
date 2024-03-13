@@ -10,6 +10,8 @@ import './Profile.css';
 import './ReserveComputer.css';
 import './Admin.css';
 import './SeeReservations.css';
+import './ReserveLab.css';
+import './EditReservations.css';
 
 import Home from './components/Home.component';
 import Login from './components/Login.component'; 
@@ -22,15 +24,16 @@ import ReserveComputer from './components/ReserveComputer.component';
 import ReserveLab from './components/ReserveLab.component';
 import Admin from './components/Admin.component';
 import SeeReservations from './components/SeeReservations.component';
+import EditReservations from './components/EditReservations.component';
 
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} /> {/* Route for home page */}
-                <Route path="/login" element={<Login />} /> {/* Route for login page */}
-                <Route path="/register" element={<Register />} /> {/* Route for login page */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} /> 
+                <Route path="/register" element={<Register />} /> 
                 <Route path="/slotavailability" element={<SlotAvailability />} />
                 <Route path="/general" element={<General />} /> 
                 <Route path="/seereservations" element={<SeeReservations />} />
@@ -39,7 +42,7 @@ function App() {
                 <Route path="/reservelab" element={<ReserveLab />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/profile" element={<Profile />} />
-
+                <Route path="/edit-reservation" element={<EditReservations />} />
             </Routes>
         </Router>
     );

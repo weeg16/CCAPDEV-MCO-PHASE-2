@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 
-class Register extends Component {
+export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,6 @@ class Register extends Component {
       return;
     }
   
-    // Send registration data to the backend
     try {
       const response = await fetch('http://localhost:5000/users/register', {
         method: 'POST',
@@ -57,7 +56,6 @@ class Register extends Component {
       }
   
       alert('Registration successful');
-      // Set registrationSuccess to true to trigger the redirection
       this.setState({ registrationSuccess: true });
     } catch (error) {
       console.error('Error during registration:', error.message);
@@ -68,7 +66,6 @@ class Register extends Component {
   render() {
     const { registrationSuccess } = this.state;
 
-    // If registration was successful, redirect to the login page
     if (registrationSuccess) {
       return (
         <div className="container">
@@ -141,4 +138,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+

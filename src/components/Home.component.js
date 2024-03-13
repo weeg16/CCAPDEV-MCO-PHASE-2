@@ -1,8 +1,6 @@
-// home.component.js
-
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import dlsuLogo from './dlsu_logo.png'; // Import the logo image
+import dlsuLogo from './dlsu_logo.png'; 
 
 
 export default class Home extends Component {

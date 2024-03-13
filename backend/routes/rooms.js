@@ -142,7 +142,6 @@ router.post('/reservelab', async (req, res) => {
 });
 
 
-// GET request to retrieve existing reservations for a specific date, time slot, and room
 router.get('/reservations/:roomName', async (req, res) => {
   const { date, timeSlot } = req.query;
   const { roomName } = req.params;
@@ -153,31 +152,55 @@ router.get('/reservations/:roomName', async (req, res) => {
   }
 
   try {
-    // Find reservations for the specified room, date, and time slot
-    const existingReservations = await Room.findOne({
-      name: roomName,
-      'reservations.date': date,
-      'reservations.timeSlot': timeSlot
-    }, 'reservations.$'); // Return only the matching reservation elements
+    const room = await Room.findOne({ name: roomName });
+    if (!room) {
+      return res.status(404).json({ message: 'Room not found' });
+    }
 
-    res.status(200).json(existingReservations || {});
+    const reservations = room.reservations.filter(reservation => reservation.date === date && reservation.timeSlot === timeSlot);
+    
+    res.status(200).json({ reservations });
   } catch (error) {
     console.error('Error retrieving reservations:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// GET request to retrieve existing reservations for a specific date
+router.delete('/reservations/:roomName', async (req, res) => {
+  const { date, timeSlot } = req.query;
+  const { roomName } = req.params;
+
+  if (!date || !timeSlot || !roomName) {
+    return res.status(400).json({ message: 'Missing room name, date, or time slot parameter' });
+  }
+
+  try {
+    const room = await Room.findOne({ name: roomName });
+    if (!room) {
+      return res.status(404).json({ message: 'Room not found' });
+    }
+
+    const filteredReservations = room.reservations.filter(reservation => !(reservation.date === date && reservation.timeSlot === timeSlot));
+
+    room.reservations = filteredReservations;
+    await room.save();
+
+    res.status(200).json({ message: 'Reservation deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 router.get('/reservations', async (req, res) => {
   const { date } = req.query;
 
-  // Validate incoming data
   if (!date) {
     return res.status(400).json({ message: 'Missing date parameter' });
   }
 
   try {
-    // Find reservations for the specified date
     const existingReservations = await Room.find({ 'reservations.date': date }, 'name reservations');
 
     res.status(200).json(existingReservations || []);
@@ -186,5 +209,71 @@ router.get('/reservations', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+router.get('/reservationsview', async (req, res) => {
+  const userId = req.headers.userid;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID not provided' });
+  }
+
+  try {
+    const reservations = await Room.find({ 'reservations.userId': userId }, 'name reservations');
+
+    res.status(200).json(reservations || []);
+  } catch (error) {
+    console.error('Error retrieving reservations:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+router.put('/edit/:reservationId', async (req, res) => {
+  const { reservationId } = req.params;
+  const { computerId, date, timeSlot } = req.body;
+
+  try {
+    const updatedReservation = await Room.findOneAndUpdate(
+      { 'reservations._id': reservationId },
+      { $set: { 'reservations.$.computerId': computerId, 'reservations.$.date': date, 'reservations.$.timeSlot': timeSlot } },
+      { new: true }
+    );
+
+    if (!updatedReservation) {
+      return res.status(404).json({ message: 'Reservation not found' });
+    }
+
+    res.status(200).json({ message: 'Reservation updated successfully', reservation: updatedReservation });
+  } catch (error) {
+    console.error('Error updating reservation:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.delete('/delete/:reservationId', async (req, res) => {
+  const { reservationId } = req.params;
+
+  try {
+    const updatedRoom = await Room.findOneAndUpdate(
+      { 'reservations._id': reservationId },
+      { $pull: { reservations: { _id: reservationId } } },
+      { new: true }
+    );
+
+    if (!updatedRoom) {
+      return res.status(404).json({ message: 'Reservation not found' });
+    }
+
+    res.status(200).json({ message: 'Reservation deleted successfully', room: updatedRoom });
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+
 
 module.exports = router;

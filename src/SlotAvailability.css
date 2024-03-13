@@ -1,7 +1,7 @@
 .seat-plan {
   display: grid;
-  grid-template-rows: repeat(5, 1fr); /* Adjust the number of columns as needed */
-  grid-gap: 10px; /* Adjust the gap between seats */
+  grid-template-rows: repeat(5, 1fr); 
+  grid-gap: 10px; 
 }
 
 .row {
@@ -9,8 +9,8 @@
 }
 
 .seat {
-  width: 50px; /* Adjust seat width */
-  height: 50px; /* Adjust seat height */
+  width: 50px; 
+  height: 50px; 
   border: 1px solid #ccc;
   display: flex;
   align-items: center;
@@ -19,9 +19,9 @@
 }
 
 .available {
-  background-color: #c3e6cb; /* Color for available seats */
+  background-color: #c3e6cb; 
 }
 
 .reserved {
-  background-color: #f5c6cb; /* Color for reserved seats */
+  background-color: #f5c6cb; 
 }

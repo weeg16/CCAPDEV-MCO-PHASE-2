@@ -1,5 +1,3 @@
-// users.js
-
 const router = require('express').Router();
 const User = require('../models/users.model');
 
@@ -34,16 +32,16 @@ router.route('/login').post(async (req, res) => {
 router.route('/register').post(async (req, res) => {
     const { firstName, lastName, username, password } = req.body;
 
-    // Check if the username already exists
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
         return res.status(400).json({ message: 'Username already exists' });
     }
 
-    // Create a new user object with default course and description
+
     const newUser = new User({ firstName, lastName, username, password, course: '', description: '' });
 
-    // Save the user to the database
+
     try {
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
@@ -60,7 +58,7 @@ router.route('/:username').get(async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        // Send the user data in the response
+
         res.json(user);
     } catch (error) {
         console.error('Error fetching user details:', error);
@@ -90,7 +88,7 @@ router.route('/:username').put(async (req, res) => {
     }
 });
 
-// Add this route to users.js for deleting a user
+
 router.route('/:username').delete(async (req, res) => {
     try {
         const deletedUser = await User.findOneAndDelete({ username: req.params.username });
@@ -106,13 +104,12 @@ router.route('/:username').delete(async (req, res) => {
 
 router.route('/:username').put(async (req, res) => {
     const username = req.params.username;
-    const { firstName, lastName, password } = req.body; // Adjust according to your schema
+    const { firstName, lastName, password } = req.body;
 
     try {
         console.log('Received PUT request for user:', username);
         console.log('Updated user details:', { firstName, lastName, password });
 
-        // Perform database update operation
         const updatedUser = await User.findOneAndUpdate(
             { username },
             { $set: { firstName, lastName, password } },

@@ -10,7 +10,7 @@ export default class SlotAvailability extends Component {
     reservations: [],
     isLoading: false,
     error: null,
-    showSeatPlan: false, // New state variable to control rendering of seat plan
+    showSeatPlan: false, 
   };
 
   componentDidMount() {
@@ -37,21 +37,23 @@ export default class SlotAvailability extends Component {
       console.log("Date, time slot, or room not provided for fetching reservations.");
       return;
     }
-
+  
     this.setState({ isLoading: true });
-
+  
     try {
       const response = await fetch(`http://localhost:5000/rooms/reservations/${encodeURIComponent(selectedRoom)}?date=${encodeURIComponent(selectedDate)}&timeSlot=${encodeURIComponent(selectedTimeSlot)}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      this.setState({ reservations: data.reservations, isLoading: false, showSeatPlan: true }); // Set showSeatPlan to true when reservations are fetched
+      const reservedComputerIds = data.reservations.map(reservation => reservation.computerId);
+      this.setState({ reservations: reservedComputerIds, isLoading: false, showSeatPlan: true }); 
     } catch (error) {
       console.error('Error fetching reservations:', error);
       this.setState({ error: 'Failed to fetch reservations', isLoading: false });
     }
   };
+  
 
   handleRoomChange = (e) => {
     this.setState({ selectedRoom: e.target.value });
@@ -71,35 +73,52 @@ export default class SlotAvailability extends Component {
   };
 
   renderSeatPlan = () => {
-    const totalComputers = 25;
-    const computersPerRow = 5;
-    const rows = totalComputers / computersPerRow;
+    const { selectedRoom } = this.state;
   
-    const reservations = this.state.reservations || [];
+    const checkReservedRooms = ['L320', 'L335', 'G304B', 'G306', 'G404', 'Y603', 'V211', 'V301', 'J213'];
   
-    const availableComputers = Array.from({ length: totalComputers }, (_, index) => index + 1)
-      .filter(computer => !reservations.some(reservation => reservation.computerId === computer));
+    if (checkReservedRooms.includes(selectedRoom) && selectedRoom !== "") {
+      const isReserved = this.state.reservations.includes(1); 
+      return (
+        <div>
+          <h3>Reservation Status:</h3>
+          <p>{isReserved ? "RESERVED" : "NOT RESERVED"}</p>
+        </div>
+      );
+    } else {
+      const totalComputers = 25;
+      const computersPerRow = 5;
+      const rows = totalComputers / computersPerRow;
   
-    const seatPlan = [];
+      const { reservations } = this.state;
+
+      const computerStatus = Array.from({ length: totalComputers }, () => 'available');
   
-    for (let i = 0; i < rows; i++) {
-      const row = [];
-      for (let j = 0; j < computersPerRow; j++) {
-        const computerNumber = i * computersPerRow + j + 1;
-        const isAvailable = availableComputers.includes(computerNumber);
-        row.push(
-          <div key={computerNumber} className={`seat ${isAvailable ? 'available' : 'reserved'}`}>
-            {computerNumber}
-          </div>
-        );
+      reservations.forEach(computerId => {
+        if (computerId && computerId <= totalComputers) {
+          computerStatus[computerId - 1] = 'reserved';
+        }
+      });
+  
+      const seatPlan = [];
+      for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < computersPerRow; j++) {
+          const computerNumber = i * computersPerRow + j + 1;
+          const isAvailable = computerStatus[computerNumber - 1] === 'available';
+          row.push(
+            <div key={computerNumber} className={`seat ${isAvailable ? 'available' : 'reserved'}`}>
+              {computerNumber}
+            </div>
+          );
+        }
+        seatPlan.push(<div key={i} className="row">{row}</div>);
       }
-      seatPlan.push(<div key={i} className="row">{row}</div>);
-    }
   
-    return <div className="seat-plan">{seatPlan}</div>;
+      return <div className="seat-plan">{seatPlan}</div>;
+    }
   };
   
-
 
   render() {
     const { rooms, selectedRoom, selectedDate, selectedTimeSlot, isLoading, error, showSeatPlan } = this.state;

@@ -10,8 +10,8 @@
 
   .login-container {
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
+    justify-content: center; 
+    align-items: center; 
     height: 100vh;
   }
 
@@ -22,17 +22,17 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 400px;
     border: 1px solid #423f32;
-    text-align: center; /* Center contents */
+    text-align: center; 
   }
 
   .login-input {
     border: 1px solid #423f32;
     background-color: #f1ebe5;
-    padding: 10px 15px; /* Adjust padding to reduce input size */
+    padding: 10px 15px; 
     margin-bottom: 1rem;
-    width: calc(100% - 30px); /* Adjust width */
+    width: calc(100% - 30px); 
     border-radius: 8px;
-    font-size: 16px; /* Adjust font size */
+    font-size: 16px; 
   }
 
   .toggle-password {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class ReserveComputer extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class ReserveComputer extends Component {
   handleSeatClick = (computerId) => {
     this.setState({ 
       computerId, 
-      timeSlot: '', // Reset time slot when a new seat is clicked
+      timeSlot: '', 
     });
   };
 
@@ -40,9 +41,10 @@ export default class ReserveComputer extends Component {
     this.setState({ submitting: true });
   
     try {
-      // Check if the selected date is in the past
       const currentDate = new Date();
       const selectedDate = new Date(this.state.date);
+
+      selectedDate.setHours(17, 0, 0, 0)
 
       console.log('Current Date:', currentDate);
       console.log('Selected Date:', selectedDate);
@@ -50,14 +52,12 @@ export default class ReserveComputer extends Component {
         this.setState({ message: 'You cannot reserve for a past date.' });
         return;
       }
-  
-      // Check if the selected date is a weekend (Saturday or Sunday)
+
       if (selectedDate.getDay() === 0 || selectedDate.getDay() === 6) {
         this.setState({ message: 'Reservations are not allowed on weekends.' });
         return;
       }
   
-      // Check if the user already has a reservation for the selected date
       const existingReservationsResponse = await fetch(`http://localhost:5000/rooms/reservations?date=${this.state.date}`, {
         method: 'GET',
         headers: {
@@ -66,7 +66,6 @@ export default class ReserveComputer extends Component {
       });
       const existingReservations = await existingReservationsResponse.json();
   
-      // Check if the user already has a reservation for the selected date
       const userId = localStorage.getItem('username');
       const userExistingReservation = existingReservations.find(reservation => reservation.userId === userId);
       if (userExistingReservation) {
@@ -74,7 +73,6 @@ export default class ReserveComputer extends Component {
         return;
       }
   
-      // If user doesn't have a reservation for the selected date, proceed with making a reservation
       const response = await fetch('http://localhost:5000/rooms/reserve', {
         method: 'POST',
         headers: {
@@ -93,7 +91,7 @@ export default class ReserveComputer extends Component {
   
       if (data.message === 'Reservation successful') {
         const updatedSeating = [...this.state.seatingArrangement];
-        updatedSeating[this.state.computerId - 1] = true; // Reserve the seat
+        updatedSeating[this.state.computerId - 1] = true; 
         this.setState({ seatingArrangement: updatedSeating });
       }
     } catch (error) {
@@ -107,7 +105,7 @@ export default class ReserveComputer extends Component {
 
   renderTimeSlots = () => {
     const { availableTimeSlots, computerId } = this.state;
-    if (!computerId) return null; // Only show time slots if a seat is selected
+    if (!computerId) return null; 
 
     return (
       <div className="time-slots">
@@ -127,14 +125,11 @@ export default class ReserveComputer extends Component {
   render() {
     const { roomName, computerId, date, timeSlot, submitting, message } = this.state;
   
-    // Get today's date
     const today = new Date();
   
-    // Check if the selected date is a weekend (Saturday or Sunday)
     const selectedDate = new Date(date);
     const isWeekend = selectedDate.getDay() === 0 || selectedDate.getDay() === 6;
   
-    // Check if the selected date is in the past
     const isPastDate = selectedDate < today;
   
     const roomNames = ['LS212', 'LS229', 'G302', 'G304A', 'Y602', 'V103', 'J212'];
@@ -150,39 +145,34 @@ export default class ReserveComputer extends Component {
     ));
   
     return (
-      <div className="reserve-computer-container" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Room Name:
-            <select value={roomName} onChange={(e) => this.setState({ roomName: e.target.value })}>
-              <option value="">Select a room</option>
-              {roomNames.map((room, index) => (
-                <option key={index} value={room}>{room}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Computer ID:
-            <input type="number" value={computerId} onChange={(e) => this.setState({ computerId: e.target.value })} />
-          </label>
-          <label>
-            Date:
-            <input type="date" value={date} min={today.toISOString().split('T')[0]} onChange={(e) => this.setState({ date: e.target.value })} />
-          </label>
-          <label>
-            Time Slot:
-            <input 
-              type="text" 
-              value={timeSlot} 
-              readOnly // This makes the input read-only
-            />
-          </label>
+      <div className="reserve-computer-container">
+        <Link to="/general" className="back-button">Back</Link>
+        <form onSubmit={this.handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex' }}>
+            <label style={{ marginRight: '1em' }}>
+              Room Name:
+              <select value={roomName} onChange={(e) => this.setState({ roomName: e.target.value })}>
+                <option value="">Select a room</option>
+                {roomNames.map((room, index) => (
+                  <option key={index} value={room}>{room}</option>
+                ))}
+              </select>
+            </label>
+            <label style={{ marginRight: '1em' }}>
+              Computer ID:
+              <input type="number" value={computerId} onChange={(e) => this.setState({ computerId: e.target.value })} />
+            </label>
+            <label style={{ marginRight: '1em' }}>
+              Date:
+              <input type="date" value={date} min={today.toISOString().split('T')[0]} onChange={(e) => this.setState({ date: e.target.value })} />
+            </label>
+          </div>
           <button type="submit" disabled={submitting || isWeekend || isPastDate}>Reserve</button>
         </form>
         {submitting && <p>Submitting reservation...</p>}
-        {isWeekend && <p>Reservations are not allowed on weekends.</p>}
-        {isPastDate && <p>Please select a future date.</p>}
-        {message && <p>{message}</p>}
+        {isWeekend}
+        {isPastDate}
+        {message}
         <div className="seating-arrangement">
           <h3>Computer Seat Numbers FROM 1-25</h3>
           <div className="seats-grid">
@@ -192,5 +182,6 @@ export default class ReserveComputer extends Component {
         </div>
       </div>
     );
-  }  
+  }
+  
 }

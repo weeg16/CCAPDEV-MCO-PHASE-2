@@ -1,7 +1,4 @@
-/* General.css */
-
-
-  .container-general {
+ .container-general {
     display: flex;
     flex-direction: column;
     justify-content: center;

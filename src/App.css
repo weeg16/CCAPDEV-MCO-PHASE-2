@@ -52,12 +52,12 @@ body {
   border: 1px solid #423f32;
   padding: 15px 20px;
   margin-bottom: 1rem;
-  width: calc(100% - 42px); /* Adjusted width */
+  width: calc(100% - 42px); 
   border-radius: 8px;
   font-size: 18px;
   cursor: pointer !;
   display: block;
-  text-align: center; /* Center align button text */
+  text-align: center; 
   text-decoration: none;
 }
 

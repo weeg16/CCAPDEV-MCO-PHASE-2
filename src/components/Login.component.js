@@ -54,7 +54,6 @@ export default class Login extends Component {
             }
 
             console.log('User is logged in');
-            // Set loggedIn state to true upon successful login
             localStorage.setItem('username', username);
             console.log(username);
             this.setState({ loggedIn: true });
@@ -71,7 +70,6 @@ export default class Login extends Component {
     render() {
         const { username, password, showPassword, loggedIn } = this.state;
 
-        // Redirect to reserve component if loggedIn is true
         if (loggedIn) {
             return <Navigate to="/general" />;
         }
