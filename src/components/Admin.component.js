@@ -143,12 +143,19 @@ export default class Admin extends Component {
         return (
             <div>
                 <h2>Admin Panel</h2>
-                <Link to="/admin" className="admin-panel" onClick={this.handleViewUserDetails}>
-                    View User Details
+                <Link to="/general" className="back-button">
+                    Back
                 </Link>
-                <Link to="/admin" className="admin-panel" onClick={this.handleViewReservations}>
-                    See Reservations
-                </Link>
+                <div>
+                    <Link to="/admin" className="admin-panel" onClick={this.handleViewUserDetails}>
+                        View User Details
+                    </Link>
+                </div>
+                <div>
+                    <Link to="/admin" className="admin-panel" onClick={this.handleViewReservations}>
+                        See Reservations
+                    </Link>
+                </div>
                 {showUserList && (
                     <div>
                         <h2>User List</h2>

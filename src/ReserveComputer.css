@@ -70,3 +70,14 @@
   .time-slot:hover {
     background-color: #e8e8e8;
   } 
+
+
+  .time-slot {
+    background-color: green; /* Default background color */
+    /* Other styling properties */
+  }
+  
+  .time-slot.occupied {
+    background-color: red; /* Background color for occupied timeslots */
+  }
+  

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class SeeReservations extends Component {
   state = {
@@ -57,6 +58,7 @@ export default class SeeReservations extends Component {
 
     return (
       <div>
+        <Link to="/general" className="back-button">Back</Link>
         <h2>Reservations</h2>
         {isLoading ? (
           <p>Loading...</p>

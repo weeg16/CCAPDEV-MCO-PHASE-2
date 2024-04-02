@@ -22,14 +22,37 @@ export default class ReserveComputer extends Component {
       submitting: false,
       message: '',
       seatingArrangement: new Array(25).fill(false),
+      reservedComputers: [], // Track reserved computer IDs
     };
   }
 
+  // Fetch reservations based on selected room, date, and time slot
+  fetchReservations = async () => {
+    const { date, timeSlot, roomName } = this.state;
+    if (!date || !timeSlot || !roomName) return;
+    
+    try {
+      const response = await fetch(`http://localhost:5000/rooms/reservations/${encodeURIComponent(roomName)}?date=${encodeURIComponent(date)}&timeSlot=${encodeURIComponent(timeSlot)}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const data = await response.json();
+      const reservedComputerIds = data.reservations.map(reservation => reservation.computerId);
+      this.setState({ reservedComputers: reservedComputerIds });
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+      this.setState({ message: 'Failed to fetch reservations' });
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.roomName !== prevState.roomName || this.state.date !== prevState.date || this.state.timeSlot !== prevState.timeSlot) {
+      this.fetchReservations();
+    }
+  }
+
   handleSeatClick = (computerId) => {
-    this.setState({ 
-      computerId, 
-      timeSlot: '', 
-    });
+    if (this.state.reservedComputers.includes(computerId)) return; // Prevent selection if computer is reserved
+    this.setState({ computerId });
   };
 
   handleTimeSlotClick = (timeSlot) => {
@@ -39,15 +62,12 @@ export default class ReserveComputer extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     this.setState({ submitting: true });
-  
+
     try {
       const currentDate = new Date();
       const selectedDate = new Date(this.state.date);
+      selectedDate.setHours(17, 0, 0, 0);
 
-      selectedDate.setHours(17, 0, 0, 0)
-
-      console.log('Current Date:', currentDate);
-      console.log('Selected Date:', selectedDate);
       if (selectedDate < currentDate) {
         this.setState({ message: 'You cannot reserve for a past date.' });
         return;
@@ -57,7 +77,7 @@ export default class ReserveComputer extends Component {
         this.setState({ message: 'Reservations are not allowed on weekends.' });
         return;
       }
-  
+
       const existingReservationsResponse = await fetch(`http://localhost:5000/rooms/reservations?date=${this.state.date}`, {
         method: 'GET',
         headers: {
@@ -65,14 +85,14 @@ export default class ReserveComputer extends Component {
         },
       });
       const existingReservations = await existingReservationsResponse.json();
-  
+
       const userId = localStorage.getItem('username');
       const userExistingReservation = existingReservations.find(reservation => reservation.userId === userId);
       if (userExistingReservation) {
         this.setState({ message: 'You already have a reservation for this date.' });
         return;
       }
-  
+
       const response = await fetch('http://localhost:5000/rooms/reserve', {
         method: 'POST',
         headers: {
@@ -88,11 +108,11 @@ export default class ReserveComputer extends Component {
       });
       const data = await response.json();
       this.setState({ message: data.message });
-  
+
       if (data.message === 'Reservation successful') {
-        const updatedSeating = [...this.state.seatingArrangement];
-        updatedSeating[this.state.computerId - 1] = true; 
-        this.setState({ seatingArrangement: updatedSeating });
+        this.setState(prevState => ({
+          seatingArrangement: prevState.seatingArrangement.map((seat, index) => index + 1 === prevState.computerId ? true : seat),
+        }));
       }
     } catch (error) {
       console.error('Error making reservation:', error);
@@ -101,11 +121,10 @@ export default class ReserveComputer extends Component {
       this.setState({ submitting: false });
     }
   };
-  
 
   renderTimeSlots = () => {
     const { availableTimeSlots, computerId } = this.state;
-    if (!computerId) return null; 
+    if (!computerId) return null;
 
     return (
       <div className="time-slots">
@@ -123,27 +142,28 @@ export default class ReserveComputer extends Component {
   };
 
   render() {
-    const { roomName, computerId, date, timeSlot, submitting, message } = this.state;
-  
+    const { roomName, computerId, date, timeSlot, submitting, message, reservedComputers } = this.state;
+
     const today = new Date();
-  
     const selectedDate = new Date(date);
     const isWeekend = selectedDate.getDay() === 0 || selectedDate.getDay() === 6;
-  
     const isPastDate = selectedDate < today;
-  
+
     const roomNames = ['LS212', 'LS229', 'G302', 'G304A', 'Y602', 'V103', 'J212'];
-  
-    const seatElements = this.state.seatingArrangement.map((reserved, index) => (
-      <div
-        key={index}
-        className={`seat ${reserved ? 'reserved' : 'available'}`}
-        onClick={() => !reserved && this.handleSeatClick(index + 1)}
-      >
-        {index + 1}
-      </div>
-    ));
-  
+
+    const seatElements = this.state.seatingArrangement.map((reserved, index) => {
+      const isReserved = reserved || reservedComputers.includes(index + 1);
+      return (
+        <div
+          key={index}
+          className={`seat ${isReserved ? 'reserved' : 'available'}`}
+          onClick={() => !isReserved && this.handleSeatClick(index + 1)}
+        >
+          {index + 1}
+        </div>
+      );
+    });
+
     return (
       <div className="reserve-computer-container">
         <Link to="/general" className="back-button">Back</Link>
@@ -158,10 +178,14 @@ export default class ReserveComputer extends Component {
                 ))}
               </select>
             </label>
-            <label style={{ marginRight: '1em' }}>
-              Computer ID:
-              <input type="number" value={computerId} onChange={(e) => this.setState({ computerId: e.target.value })} />
-            </label>
+            <label style={{ marginRight: '1em', color: '#000' }}>
+            Computer ID:
+            <input
+              type="number"
+              value={computerId}
+              style={{ pointerEvents: 'none', backgroundColor: '#cdcf0', color: '#000' }} // Apply custom styles
+            />
+          </label>
             <label style={{ marginRight: '1em' }}>
               Date:
               <input type="date" value={date} min={today.toISOString().split('T')[0]} onChange={(e) => this.setState({ date: e.target.value })} />
@@ -170,11 +194,9 @@ export default class ReserveComputer extends Component {
           <button type="submit" disabled={submitting || isWeekend || isPastDate}>Reserve</button>
         </form>
         {submitting && <p>Submitting reservation...</p>}
-        {isWeekend}
-        {isPastDate}
-        {message}
+        <p>{message}</p>
         <div className="seating-arrangement">
-          <h3>Computer Seat Numbers FROM 1-25</h3>
+          <h3>Computer Seats</h3>
           <div className="seats-grid">
             {seatElements}
           </div>
@@ -183,5 +205,4 @@ export default class ReserveComputer extends Component {
       </div>
     );
   }
-  
 }
