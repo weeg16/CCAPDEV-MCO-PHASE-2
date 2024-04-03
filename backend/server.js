@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI || 'mongodb://localhost:27017/mydatabase';
+const uri = process.env.ATLAS_URI;
 mongoose.connect(uri);
 
 const connection = mongoose.connection;
