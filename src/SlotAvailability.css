@@ -1,5 +1,6 @@
 .seat-plan {
   display: grid;
+  justify-content: center;
   grid-template-rows: repeat(5, 1fr); 
   grid-gap: 10px; 
 }

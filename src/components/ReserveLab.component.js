@@ -138,7 +138,7 @@ export default class ReserveLab extends Component {
   
     return (
       <div className="reserve-lab-container" style={{ display: 'flex', flexDirection: 'column'}}>
-        <Link to="/general" className="back-button">Back</Link>
+        <Link to="/general" className="back-button-reserve">Back</Link>
         <form onSubmit={this.handleSubmit}>
           <label>
             Room Name:
