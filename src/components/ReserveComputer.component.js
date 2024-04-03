@@ -142,7 +142,7 @@ export default class ReserveComputer extends Component {
   };
 
   render() {
-    const { roomName, computerId, date, timeSlot, submitting, message, reservedComputers } = this.state;
+    const { roomName, computerId, date, submitting, message, reservedComputers } = this.state;
 
     const today = new Date();
     const selectedDate = new Date(date);
