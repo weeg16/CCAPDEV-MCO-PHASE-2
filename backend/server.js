@@ -12,7 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri);
+mongoose.connect(uri)
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error('Could not connect to MongoDB:', err));
 
 const connection = mongoose.connection;
 connection.once('open', () => {
