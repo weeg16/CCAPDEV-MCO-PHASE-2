@@ -2,6 +2,7 @@
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://phase3-frontend.onrender.com",
   "dependencies": {
     "16": "^0.0.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -16,7 +17,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"PORT=3000 react-scripts start\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
