@@ -10,7 +10,7 @@ export default class Admin extends Component {
             loading: true,
             error: null,
             showUserList: false,
-            showReservations: false,
+            showReservations: false, //
             roomName: "",
             date: "",
             timeSlot: ""
