@@ -2,7 +2,7 @@
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https:/ccapdev-mco-phase-3.onrender.com",
+  "proxy": "https://ccapdev-mco-phase-3.onrender.com",
   "dependencies": {
     "16": "^0.0.2",
     "@testing-library/jest-dom": "^5.17.0",
